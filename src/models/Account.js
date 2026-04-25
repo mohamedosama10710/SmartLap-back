@@ -1,4 +1,5 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const accountSchema = new mongoose.Schema({
   name: {
@@ -31,7 +32,7 @@ const accountSchema = new mongoose.Schema({
     default: "patient",
   },
   patientId: {
-    type: Number,
+    type: String,
     unique: true,
     sparse: true,
   },
@@ -45,4 +46,21 @@ const accountSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Account", accountSchema);
+
+
+
+accountSchema.pre("save", async function () {
+  if (!this.isModified("password")) return;
+
+  this.password = await bcrypt.hash(this.password, 10);
+});
+
+accountSchema.methods.correctPassword = async function (
+  candidatePassword,
+  userPassword,
+) {
+  return await bcrypt.compare(candidatePassword, userPassword);
+};
+const Account = mongoose.model("Account", accountSchema);
+
+export default Account;
