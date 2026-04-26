@@ -31,6 +31,7 @@ const accountSchema = new mongoose.Schema({
     enum: ["patient", "chemist", "admin"],
     default: "patient",
   },
+
   patientId: {
     type: String,
     unique: true,
@@ -40,14 +41,13 @@ const accountSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  resetPasswordToken: String,
+  resetPasswordExpires: Date,
   createdAt: {
     type: Date,
     default: Date.now,
   },
 });
-
-
-
 
 accountSchema.pre("save", async function () {
   if (!this.isModified("password")) return;
