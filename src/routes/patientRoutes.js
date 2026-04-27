@@ -9,21 +9,20 @@ router.post("/", auth, restrictTo("admin", "staff"));
 // get all patients (admin + staff)
 router.get("/", auth, restrictTo("admin", "staff"));
 
-
 // patient نفسه
 router.get("/patientProfile", auth, restrictTo("patient"));
 
-// patient يعدل نفسه
+// update (age,weight,height)
 router.patch("/patientProfile", auth, restrictTo("patient"));
 
+// get patient by id
+router.get("/:id", auth, restrictTo("admin", "staff"));
 
 // edit patient
-router.patch("/:id", auth, restrictTo("admin", "chemist"));
+router.patch("/:id", auth, restrictTo("admin", "staff"));
 
-
-// get patient by id
-
-router.get("/:id", auth, restrictTo("admin", "staff"));
+// delete patient by id
+router.delete("/:id", auth, restrictTo("admin", "staff"));
 
 
 
