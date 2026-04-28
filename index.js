@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./src/config/dp.js";
-import authRoutes from "./src/routes/authRoutes.js";
 import errorHandler from "./src/middlewares/errorHandler.js";
 import staffRoutes from "./src/routes/staff.js";
 import refRoutes from "./src/routes/refRouter.js";
@@ -21,7 +20,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-//Routes
+// Routes
 app.use("/account", accountRoutes);
 app.use("/staff", staffRoutes);
 app.use("/ref", refRoutes);
