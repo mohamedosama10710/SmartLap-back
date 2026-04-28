@@ -4,6 +4,11 @@ import dotenv from "dotenv";
 import connectDB from "./src/config/dp.js";
 import authRoutes from "./src/routes/authRoutes.js";
 import errorHandler from "./src/middlewares/errorHandler.js";
+import staffRoutes from "./src/routes/staff.js";
+import refRoutes from "./src/routes/refRouter.js";
+import reportRoutes from "./src/routes/reportRoutes.js";
+import accountRoutes from "./src/routes/accountRoutes.js";
+import patientRoutes from "./src/routes/patientRoutes.js";
 
 dotenv.config();
 
@@ -17,10 +22,11 @@ app.use(cors());
 app.use(express.json());
 
 //Routes
-app.use("/api/auth", authRoutes);
-
-
-
+app.use("/account", accountRoutes);
+app.use("/staff", staffRoutes);
+app.use("/ref", refRoutes);
+app.use("/reports", reportRoutes);
+app.use("/patients", patientRoutes);
 
 
 

@@ -28,7 +28,7 @@ const accountSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["patient", "chemist", "admin"],
+    enum: ["patient", "staff", "admin"],
     default: "patient",
   },
 

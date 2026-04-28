@@ -1,33 +1,27 @@
-import mongoose, { model } from "mongoose";
+const testReferenceSchema = new mongoose.Schema({
+  testName: { type: String, required: true, trim: true },
 
-const shemaTest = mongoose.Schema({
-    testName: {
-        type: String,
-        required: ["true", "testName is required"],
-        // enum:["Hemoglobin(HB)","WBCs(TLC)","Platelets(PLT)","Random Sugar(RBS)","HbA1c","Creatinine","Urea","AST(SGOT)","ALT(SGPT)","Total Cholesterol","Ferritin","CRP","Troponin","INR"]
-    },
-    category: {
-        type: String,
-        required: [true, "category is required"],
-        enum:["Male","Female","Children","Newborn","Adults","All"]
-    },
-    unit: {
-        type: String,
-        required: [true, "category is required"],
-    },
-    min: {
-        type: Number,
-        required: [true, "min is required"],
-    },
-    max: {
-        type: Number,
-        required: [true, "max is required"],
+  category: { type: String, required: true },
 
-    },
-    referral: {
-        type: String,
-        
-    }
-})
+  applicableTo: {
+    type: String,
+    enum: ["Male", "Female", "Children", "Newborn", "Adults", "All"],
+    default: "All",
+  },
 
-export  const testReference=mongoose.model("TestReference",shemaTest)
+  unit: { type: String, required: true },
+
+  min: { type: Number, required: true },
+  max: { type: Number, required: true },
+  
+  // زي: "from 2.0 to 5.0" أو "less than 200" 
+  referenceText: String,
+
+  criticalRange: {
+    low: Number,
+    high: Number,
+  },
+
+  referral: String, // مثلا: "Cardiology", "Oncology"
+
+}, { timestamps: true });
