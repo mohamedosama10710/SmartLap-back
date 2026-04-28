@@ -1,5 +1,5 @@
 export const data = [
-  // 🩸 Hematology
+  //  Hematology
   {
     testName: "Hemoglobin(HB)",
     category: "Hematology",

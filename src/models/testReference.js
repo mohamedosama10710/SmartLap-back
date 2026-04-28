@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 const testReferenceSchema = new mongoose.Schema({
   testName: { type: String, required: true, trim: true },
 
@@ -25,3 +26,5 @@ const testReferenceSchema = new mongoose.Schema({
   referral: String, // مثلا: "Cardiology", "Oncology"
 
 }, { timestamps: true });
+
+export const testReference = mongoose.model("TestReference", testReferenceSchema);
