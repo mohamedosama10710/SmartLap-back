@@ -1,163 +1,202 @@
 export const data = [
+  // 🩸 Hematology
   {
     testName: "Hemoglobin(HB)",
-    category: "Male",
+    category: "Hematology",
+    applicableTo: "Male",
     unit: "g/dL",
     min: 13,
     max: 18,
-    referral: "Internal Medicine/Hematology"
+    referenceText: "13 - 18 g/dL",
+    criticalRange: { low: 7, high: 20 },
+    referral: "Hematology/Internal Medicine"
   },
   {
     testName: "Hemoglobin(HB)",
-    category: "Female",
+    category: "Hematology",
+    applicableTo: "Female",
     unit: "g/dL",
     min: 12,
     max: 16,
-    referral: "Internal Medicine/Hematology"
+    referenceText: "12 - 16 g/dL",
+    criticalRange: { low: 7, high: 18 },
+    referral: "Hematology/Internal Medicine"
   },
   {
     testName: "Hemoglobin(HB)",
-    category: "Children",
+    category: "Hematology",
+    applicableTo: "Children",
     unit: "g/dL",
     min: 11,
     max: 16,
-    referral: "pediatrician"
+    referenceText: "11 - 16 g/dL",
+    criticalRange: { low: 7, high: 18 },
+    referral: "Pediatrics"
   },
-  {
-    testName: "Hemoglobin(HB)",
-    category: "Newborn",
-    unit: "g/dL",
-    min: 14,
-    max: 24,
-    referral: "Nursery/Children"
-  },
+
+  // 🧪 WBC
   {
     testName: "WBCs(TLC)",
-    category: "Adults",
-    unit: "cells/mcL",
+    category: "Hematology",
+    applicableTo: "Adults",
+    unit: "10^3/µL",
     min: 4,
     max: 11,
-    referral: "Internal Medicine/Diets"
+    referenceText: "4 - 11 x10^3/µL",
+    criticalRange: { low: 2, high: 25 },
+    referral: "Internal Medicine"
   },
-  {
-    testName: "WBCs(TLC)",
-    category: "Newborn",
-    unit: "cells/mcL",
-    min: 9,
-    max: 30,
-    referral: "pediatrician"
-  },
+
+  // 🧬 Platelets
   {
     testName: "Platelets(PLT)",
-    category: "All",
-    unit: "cells/mcL",
+    category: "Hematology",
+    applicableTo: "All",
+    unit: "10^3/µL",
     min: 150,
     max: 450,
-    referral: "Internal Medicine/Hematology"
+    referenceText: "150 - 450 x10^3/µL",
+    criticalRange: { low: 50, high: 1000 },
+    referral: "Hematology"
   },
+
+  // 🍬 Sugar
   {
     testName: "Random Sugar(RBS)",
-    category: "All",
+    category: "Clinical Chemistry",
+    applicableTo: "All",
     unit: "mg/dL",
     min: 70,
     max: 140,
-    referral: "Endocrine glands and sugar"
+    referenceText: "70 - 140 mg/dL",
+    criticalRange: { low: 50, high: 400 },
+    referral: "Endocrinology"
   },
+
   {
     testName: "HbA1c",
-    category: "All",
+    category: "Clinical Chemistry",
+    applicableTo: "All",
     unit: "%",
     min: 4.2,
     max: 6.2,
-    referral: "Endocrine glands and sugar"
+    referenceText: "4.2 - 6.2 %",
+    criticalRange: { low: 3.5, high: 10 },
+    referral: "Endocrinology"
   },
+
+  // 🧠 Kidney
   {
     testName: "Creatinine",
-    category: "Male",
+    category: "Clinical Chemistry",
+    applicableTo: "Male",
     unit: "mg/dL",
     min: 0.4,
     max: 1.4,
-    referral: "Kidney clinic"
+    referenceText: "0.4 - 1.4 mg/dL",
+    criticalRange: { low: 0.2, high: 5 },
+    referral: "Nephrology"
   },
-  {
-    testName: "Creatinine",
-    category: "Female",
-    unit: "mg/dL",
-    min: 0.4,
-    max: 1.3,
-    referral: "Kidney clinic"
-  },
+
   {
     testName: "Urea",
-    category: "All",
+    category: "Clinical Chemistry",
+    applicableTo: "All",
     unit: "mg/dL",
     min: 15,
     max: 45,
-    referral: "Kidney clinic"
+    referenceText: "15 - 45 mg/dL",
+    criticalRange: { low: 5, high: 150 },
+    referral: "Nephrology"
   },
+
+  // 🧬 Liver
   {
     testName: "AST(SGOT)",
-    category: "All",
+    category: "Liver Function",
+    applicableTo: "All",
     unit: "U/L",
     min: 0,
     max: 38,
-    referral: "KLiver and digestive system"
+    referenceText: "Up to 38 U/L",
+    criticalRange: { high: 200 },
+    referral: "Gastroenterology"
   },
+
   {
     testName: "ALT(SGPT)",
-    category: "All",
+    category: "Liver Function",
+    applicableTo: "All",
     unit: "U/L",
     min: 0,
     max: 40,
-    referral: "KLiver and digestive system"
+    referenceText: "Up to 40 U/L",
+    criticalRange: { high: 200 },
+    referral: "Gastroenterology"
   },
+
+  // ❤️ Lipid
   {
     testName: "Total Cholesterol",
-    category: "All",
+    category: "Lipid Profile",
+    applicableTo: "All",
     unit: "mg/dL",
     min: 50,
     max: 200,
-    referral: "Heart clinic"
+    referenceText: "Less than 200 mg/dL",
+    criticalRange: { high: 300 },
+    referral: "Cardiology"
   },
+
+  // 🩸 Ferritin
   {
     testName: "Ferritin",
-    category: "Male",
+    category: "Hematology",
+    applicableTo: "Male",
     unit: "ng/mL",
     min: 30,
     max: 300,
-    referral: "Internal Medicine/Hematology"
+    referenceText: "30 - 300 ng/mL",
+    criticalRange: { high: 1000 },
+    referral: "Hematology"
   },
-  {
-    testName: "Ferritin",
-    category: "Female",
-    unit: "ng/mL",
-    min: 20,
-    max: 150,
-    referral: "Internal Medicine/Hematology"
-  },
+
+  // 🔥 CRP
   {
     testName: "CRP",
-    category: "All",
+    category: "Inflammation",
+    applicableTo: "All",
     unit: "mg/L",
     min: 0,
     max: 6,
-    referral: "Internal Medicine/Diets"
+    referenceText: "Up to 6 mg/L",
+    criticalRange: { high: 100 },
+    referral: "Internal Medicine"
   },
+
+  // ❤️ Troponin
   {
     testName: "Troponin",
-    category: "All",
+    category: "Cardiac Markers",
+    applicableTo: "All",
     unit: "ng/mL",
     min: 0,
     max: 0.04,
-    referral: "Cardiac emergency immediately"
-  }
-  ,
+    referenceText: "Up to 0.04 ng/mL",
+    criticalRange: { high: 0.5 },
+    referral: "Emergency/Cardiology"
+  },
+
+  // 🧬 INR
   {
     testName: "INR",
-    category: "All",
+    category: "Coagulation",
+    applicableTo: "All",
     unit: "Ratio",
     min: 1.0,
     max: 2.0,
-    referral: "Cardiology/Internal Medicine Clinic"
+    referenceText: "1.0 - 2.0",
+    criticalRange: { high: 5 },
+    referral: "Cardiology/Internal Medicine"
   }
 ];
