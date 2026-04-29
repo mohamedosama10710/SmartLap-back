@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const testResultSchema = new mongoose.Schema({
   test: {
@@ -33,7 +33,7 @@ const testResultSchema = new mongoose.Schema({
     low: Number,
     high: Number,
   },
-  // زي: "up to 5.0" أو "less than 200" 
+  // زي: "up to 5.0" أو "less than 200"
   referenceText: {
     type: String,
   },
@@ -52,24 +52,27 @@ const testResultSchema = new mongoose.Schema({
   },
 });
 
-const reportSchema = new mongoose.Schema({
-  patient: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Patient",
-    required: true,
+const reportSchema = new mongoose.Schema(
+  {
+    patient: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Patient",
+      required: true,
+    },
+
+    tests: [testResultSchema],
+
+    requestDate: {
+      type: Date,
+      default: Date.now,
+    },
+
+    printedAt: Date,
+
+    referredBy: String,
   },
+  { timestamps: true },
+);
 
-  tests: [testResultSchema], 
-
-  requestDate: {
-    type: Date,
-    default: Date.now,
-  },
-
-  printedAt: Date,
-
-  referredBy: String,
-
-}, { timestamps: true });
-
-module.exports = mongoose.model("Report", reportSchema);
+const Report = mongoose.model("Report", reportSchema);
+export default Report;
