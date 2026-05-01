@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import {testReference} from "../models/testReference.js"
 import { data } from "../utils/testsArray.js"
 
 const connectDB = async () => {

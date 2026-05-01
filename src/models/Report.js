@@ -15,7 +15,8 @@ const testResultSchema = new mongoose.Schema({
 
   status: {
     type: String,
-    enum: ["H", "N", "L"],
+    enum: ["H", "N", "L", "Pending"],
+    default: "Pending",
   },
   // snapshot(مهم عشان التيست ممكن يتغير في المستقبل)
   testName: {
@@ -41,7 +42,10 @@ const testResultSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-
+  patientAdvice: {
+    type: String,
+    default: "",
+  },
   trend: {
     direction: {
       type: String,
@@ -54,6 +58,11 @@ const testResultSchema = new mongoose.Schema({
 
 const reportSchema = new mongoose.Schema(
   {
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Staff",
+      required: true,
+    },
     patient: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Patient",
@@ -70,6 +79,12 @@ const reportSchema = new mongoose.Schema(
     printedAt: Date,
 
     referredBy: String,
+
+    reportStatus: {
+      type: String,
+      enum: ["Pending", "Completed", "Printed"],
+      default: "Pending",
+    },
   },
   { timestamps: true },
 );
