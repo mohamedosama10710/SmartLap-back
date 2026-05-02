@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const testResultSchema = new mongoose.Schema({
   test: {
@@ -15,7 +15,8 @@ const testResultSchema = new mongoose.Schema({
 
   status: {
     type: String,
-    enum: ["H", "N", "L"],
+    enum: ["H", "N", "L", "Pending"],
+    default: "Pending",
   },
   // snapshot(مهم عشان التيست ممكن يتغير في المستقبل)
   testName: {
@@ -33,7 +34,7 @@ const testResultSchema = new mongoose.Schema({
     low: Number,
     high: Number,
   },
-  // زي: "up to 5.0" أو "less than 200" 
+  // زي: "up to 5.0" أو "less than 200"
   referenceText: {
     type: String,
   },
@@ -41,7 +42,10 @@ const testResultSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-
+  patientAdvice: {
+    type: String,
+    default: "",
+  },
   trend: {
     direction: {
       type: String,
@@ -52,24 +56,38 @@ const testResultSchema = new mongoose.Schema({
   },
 });
 
-const reportSchema = new mongoose.Schema({
-  patient: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Patient",
-    required: true,
+const reportSchema = new mongoose.Schema(
+  {
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Staff",
+      required: true,
+    },
+    patient: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Patient",
+      required: true,
+    },
+
+    tests: [testResultSchema],
+
+    requestDate: {
+      type: Date,
+      default: Date.now,
+    },
+
+    printedAt: Date,
+
+    referredBy: String,
+
+    reportStatus: {
+      type: String,
+      enum: ["Pending", "Completed", "Printed"],
+      default: "Pending",
+    },
   },
+  { timestamps: true },
+);
 
-  tests: [testResultSchema], 
-
-  requestDate: {
-    type: Date,
-    default: Date.now,
-  },
-
-  printedAt: Date,
-
-  referredBy: String,
-
-}, { timestamps: true });
-
-module.exports = mongoose.model("Report", reportSchema);
+const Report = mongoose.model("Report", reportSchema);
+export default Report;

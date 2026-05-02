@@ -5,10 +5,10 @@ const router = express.Router();
 
 
 // create ref (admin)
-router.post("/", auth, restrictTo("admin"));
+// router.post("/", auth, restrictTo("admin"));
 
-// get all ref (admin)
-router.get("/", auth, restrictTo("admin"));
+// // get all ref (admin)
+// router.get("/", auth, restrictTo("admin"));
 
 //edit ref
 router.patch("/:id", auth, restrictTo("admin"));
