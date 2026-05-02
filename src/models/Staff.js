@@ -51,3 +51,4 @@ const staffSchema = new mongoose.Schema({
 });
 
 export const staffModel = mongoose.model("Staff", staffSchema);
+

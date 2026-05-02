@@ -4,6 +4,7 @@ import {createStaff,getAllstaff,editStaff,deletedStaff} from "../Controllers/sta
 const router = express.Router();
 
 
+
 // create staff (admin)
 
 router.post("/", auth, restrictTo("admin"),createStaff);
@@ -16,6 +17,17 @@ router.patch("/:id", auth, restrictTo("admin"),editStaff);
 
 //delete staff
 router.delete("/:id", auth,restrictTo("admin"),deletedStaff);
+// // create staff (admin)
+// router.post("/", auth, restrictTo("admin"));
+
+// // get all staff (admin)
+// router.get("/", auth, restrictTo("admin"));
+
+// //edit staff
+// router.patch("/:id", auth, restrictTo("admin"));
+
+// //edit staff
+// router.delete("/:id", auth,restrictTo("admin"));
 
 
 

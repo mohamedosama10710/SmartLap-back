@@ -49,20 +49,8 @@ const accountSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-});
+},{timestamps: true});
 
-accountSchema.pre("save", async function () {
-  if (!this.isModified("password")) return;
 
-  this.password = await bcrypt.hash(this.password, 10);
-});
+export default  mongoose.model("Account", accountSchema);
 
-accountSchema.methods.correctPassword = async function (
-  candidatePassword,
-  userPassword,
-) {
-  return await bcrypt.compare(candidatePassword, userPassword);
-};
-const Account = mongoose.model("Account", accountSchema);
-
-export default Account;

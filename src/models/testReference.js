@@ -8,7 +8,7 @@ const testReferenceSchema = new mongoose.Schema({
     type: String,
     enum: ["Male", "Female", "Children", "Newborn", "Adults", "All"],
     default: "All",
-  },
+  }, 
 
   unit: { type: String, required: true },
 
@@ -16,15 +16,20 @@ const testReferenceSchema = new mongoose.Schema({
   max: { type: Number, required: true },
   
   // زي: "from 2.0 to 5.0" أو "less than 200" 
-  referenceText: String,
+  referenceText: {
+    type: String, 
+      required: true,
+  },
 
   criticalRange: {
     low: Number,
     high: Number,
   },
+  { timestamps: true },
+);
 
   referral: String, // مثلا: "Cardiology", "Oncology"
 
 }, { timestamps: true });
 
-export const testReference = mongoose.model("TestReference", testReferenceSchema);
+export default mongoose.model("TestReference", testReferenceSchema);
