@@ -1,8 +1,11 @@
 import express from "express";
 import { auth, restrictTo } from "../middlewares/authMiddleware.js";
+import{resetPassword,forgotPassword} from "../Controllers/account.js"
 import { registerStaff, registerPatient, login, updateProfile, updatePassword } from "../Controllers/account.js";
 
+
 const router = express.Router();
+
 
 router.post("/login", login);
 router.post("/registerStaff", auth, restrictTo("admin"), registerStaff);
