@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const staffSchema = new mongoose.Schema({
   accountId: {
@@ -50,4 +50,4 @@ const staffSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Staff", staffSchema);
+export const staffModel = mongoose.model("Staff", staffSchema);

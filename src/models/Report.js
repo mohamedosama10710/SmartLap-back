@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const testResultSchema = new mongoose.Schema({
   test: {
@@ -72,4 +72,4 @@ const reportSchema = new mongoose.Schema({
 
 }, { timestamps: true });
 
-module.exports = mongoose.model("Report", reportSchema);
+export const reportModel = mongoose.model("Report", reportSchema);

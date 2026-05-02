@@ -1,20 +1,21 @@
 import express from "express";
 import { auth, restrictTo } from "../middlewares/authMiddleware.js";
-
+import {createStaff,getAllstaff,editStaff,deletedStaff} from "../Controllers/staff.js";
 const router = express.Router();
 
 
 // create staff (admin)
-router.post("/", auth, restrictTo("admin"));
+
+router.post("/", auth, restrictTo("admin"),createStaff);
 
 // get all staff (admin)
-router.get("/", auth, restrictTo("admin"));
+router.get("/", auth, restrictTo("admin"),getAllstaff);
 
 //edit staff
-router.patch("/:id", auth, restrictTo("admin"));
+router.patch("/:id", auth, restrictTo("admin"),editStaff);
 
-//edit staff
-router.delete("/:id", auth,restrictTo("admin"));
+//delete staff
+router.delete("/:id", auth,restrictTo("admin"),deletedStaff);
 
 
 

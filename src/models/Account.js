@@ -25,6 +25,7 @@ const accountSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+    
   },
   role: {
     type: String,
@@ -43,6 +44,7 @@ const accountSchema = new mongoose.Schema({
   },
   resetPasswordToken: String,
   resetPasswordExpires: Date,
+  resetPasswordVerified:Boolean,
   createdAt: {
     type: Date,
     default: Date.now,
