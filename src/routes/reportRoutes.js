@@ -4,14 +4,13 @@ import { createReport, getAllReports } from "../Controllers/report.js";
 
 import {getDangerousReports,getPatientReport,editReport,deleteReport,sendPatientEmail} from "../Controllers/report.js"
 
-import { createReport, getAllReports } from "../Controllers/report.js";
 const router = express.Router();
 
-// // create report (admin + staff)
-// router.post("/", auth, restrictTo("admin", "staff"),createReport);
+// create report (admin + staff)
+router.post("/", auth, restrictTo("admin", "staff"),createReport);
 
-// // get all reports (admin+staff)
-// router.get("/", auth, restrictTo("admin","staff"),getAllReports);
+// get all reports (admin+staff)
+router.get("/", auth, restrictTo("admin","staff"),getAllReports);
 
 // dangerous reports (admin)
 router.get("/dangerous", auth, restrictTo("admin"),getDangerousReports);

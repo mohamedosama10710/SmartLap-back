@@ -1,7 +1,7 @@
 import { sendEmail } from "../utils/sendEmail.js";
 import Account from "../models/Account.js";
-import testReference  from "../models/testReference.js";
-import Report  from "../models/Report.js";
+import testReference from "../models/testReference.js";
+import Report from "../models/Report.js";
 
 //create report
 export const createReport = async (req, res, next) => {
@@ -122,44 +122,46 @@ export const getAllReports = async (req, res, next) => {
   }
 };
 
-
-let getDangerousReports= async (req,res,next)=>{
-try{
-let DangerousReports=await reportModel.find({critical:true});
-res.status(200).json({message:"success",results:DangerousReports.length,data:DangerousReports})
-}
-catch(error){
-next(error)
-}
-
-};
-let getPatientReport= async (req,res,next)=>{
-    try{
-const accountId=req.user._id;
-const patient= await patientModel.findOne({accountId});
-if(!patient){
- return res.status(404).json({message:" patient profile not found"});
-}
-let PatientReport= await reportModel.find({patient:patient._id}).populate({
-                path: 'patient',
-                populate: {
-                    path: 'accountId', 
-                   select: 'email name  phone role -password'
-                }
-            });
-                  res.status(200).json({ 
-            message: "done", 
-            results: PatientReport.length, 
-            data: PatientReport});
-    }catch(error){
-next(error)
-    }
-
-
-};
-let editReport= async (req,res,next)=>{
+let getDangerousReports = async (req, res, next) => {
   try {
-    const { id } = req.params; 
+    let DangerousReports = await reportModel.find({ critical: true });
+    res.status(200).json({
+      message: "success",
+      results: DangerousReports.length,
+      data: DangerousReports,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+let getPatientReport = async (req, res, next) => {
+  try {
+    const accountId = req.user._id;
+    const patient = await patientModel.findOne({ accountId });
+    if (!patient) {
+      return res.status(404).json({ message: " patient profile not found" });
+    }
+    let PatientReport = await reportModel
+      .find({ patient: patient._id })
+      .populate({
+        path: "patient",
+        populate: {
+          path: "accountId",
+          select: "email name  phone role -password",
+        },
+      });
+    res.status(200).json({
+      message: "done",
+      results: PatientReport.length,
+      data: PatientReport,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+let editReport = async (req, res, next) => {
+  try {
+    const { id } = req.params;
     const { patient, referredBy, tests } = req.body;
     let processedTests = undefined;
     let allTestsCompleted = true;
@@ -167,10 +169,14 @@ let editReport= async (req,res,next)=>{
     if (tests && tests.length > 0) {
       processedTests = [];
       for (const item of tests) {
-        const reference = await mongoose.model("TestReference").findById(item.testId);
+        const reference = await mongoose
+          .model("TestReference")
+          .findById(item.testId);
 
         if (!reference) {
-          return res.status(404).json({ message: `Test reference not found for ID: ${item.testId}` });
+          return res.status(404).json({
+            message: `Test reference not found for ID: ${item.testId}`,
+          });
         }
 
         let currentStatus = "Pending";
@@ -190,10 +196,15 @@ let editReport= async (req,res,next)=>{
           }
 
           if (reference.criticalRange) {
-            if ((reference.criticalRange.low && item.result <= reference.criticalRange.low) ||
-                (reference.criticalRange.high && item.result >= reference.criticalRange.high)) {
+            if (
+              (reference.criticalRange.low &&
+                item.result <= reference.criticalRange.low) ||
+              (reference.criticalRange.high &&
+                item.result >= reference.criticalRange.high)
+            ) {
               isCritical = true;
-              adviceMessage = reference.adviceTemplates?.critical || adviceMessage;
+              adviceMessage =
+                reference.adviceTemplates?.critical || adviceMessage;
             }
           }
         } else {
@@ -220,12 +231,12 @@ let editReport= async (req,res,next)=>{
     const updatedReport = await Report.findByIdAndUpdate(
       id,
       {
-        ...(patient && { patient }),           
-        ...(referredBy && { referredBy }),     
-        ...(processedTests && { tests: processedTests }), 
-        reportStatus
+        ...(patient && { patient }),
+        ...(referredBy && { referredBy }),
+        ...(processedTests && { tests: processedTests }),
+        reportStatus,
       },
-      { new: true, runValidators: true } 
+      { new: true, runValidators: true },
     );
 
     if (!updatedReport) {
@@ -241,33 +252,31 @@ let editReport= async (req,res,next)=>{
   }
 };
 
-let deleteReport= async (req,res,next)=>{
-try{
-let {id}=req.params;
-let deletedReport=await staffModel.findByIdAndDelete(id);
-if(!deletedReport){
-  return res.status(404).json({message:"not found"})
-}
+let deleteReport = async (req, res, next) => {
+  try {
+    let { id } = req.params;
+    let deletedReport = await staffModel.findByIdAndDelete(id);
+    if (!deletedReport) {
+      return res.status(404).json({ message: "not found" });
+    }
     res.status(200).json({ message: "Staff deleted successfully " });
-
-}
-catch(error){
-next(error)
-}
-
+  } catch (error) {
+    next(error);
+  }
 };
 
-let sendPatientEmail= async (req,res,next)=>{
-try{
-let {email, subject, message, patientName}=req.body;
-let user = await Account.findOne({ email });
-if (!user) {
-      return res.status(404).json({ 
-        status: "Error", 
-        message: "invalid Email" 
-      });}
+let sendPatientEmail = async (req, res, next) => {
+  try {
+    let { email, subject, message, patientName } = req.body;
+    let user = await Account.findOne({ email });
+    if (!user) {
+      return res.status(404).json({
+        status: "Error",
+        message: "invalid Email",
+      });
+    }
 
-const htmlMessage = `
+    const htmlMessage = `
       <div style="font-family: Arial, sans-serif; border: 1px solid #ddd; padding: 20px; direction: rtl;">
         <h2 style="color: #2c3e50;">أهلاً بك يا ${patientName}،</h2>
         <p style="font-size: 16px; color: #34495e;">
@@ -278,19 +287,23 @@ const htmlMessage = `
       </div>
     `;
     await sendEmail({
-        
-        
-email: email,
-      subject: subject ,
-      message: htmlMessage    });
- res.status(200).json({ status: "Success", message: "Email sent to patient successfully" });
-}
-catch(error)
-{
-next(error);
-}
+      email: email,
+      subject: subject,
+      message: htmlMessage,
+    });
+    res.status(200).json({
+      status: "Success",
+      message: "Email sent to patient successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
-export {getDangerousReports,getPatientReport,editReport,deleteReport,sendPatientEmail};
-
-
+export {
+  getDangerousReports,
+  getPatientReport,
+  editReport,
+  deleteReport,
+  sendPatientEmail,
+};
