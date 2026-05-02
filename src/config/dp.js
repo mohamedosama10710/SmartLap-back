@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import testReference from "../models/testReference.js"
-import { data } from "../utils/testsArray.js"
-import firstLogin from "../utils/firstLogin.js";
+// import testReference from "../models/testReference.js"
+// import { data } from "../utils/testsArray.js"
+// import firstLogin from "../utils/firstLogin.js";
 
 const connectDB = async () => {
   try {
