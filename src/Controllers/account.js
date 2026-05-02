@@ -2,6 +2,8 @@ import Account from "../models/Account.js";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import { sendEmail } from "../utils/sendEmail.js";
+import bcrypt from "bcrypt";
+
 let forgotPassword = async (req, res, next) => {
   let user;
   try {
@@ -70,10 +72,6 @@ let resetPassword = async (req, res, next) => {
     next(error);
   }
 };
-
-export { forgotPassword, resetPassword };
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 
 const registerStaff = async (req, res) => {
   // Logic to register a staff member
@@ -237,3 +235,6 @@ const updatePassword = async (req, res) => {
 };
 
 export { registerStaff, registerPatient, login, updateProfile, updatePassword };
+
+export { forgotPassword, resetPassword };
+
