@@ -25,8 +25,6 @@ const testReferenceSchema = new mongoose.Schema({
     low: Number,
     high: Number,
   },
-  { timestamps: true },
-);
 
   referral: String, // مثلا: "Cardiology", "Oncology"
 
