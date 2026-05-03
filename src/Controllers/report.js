@@ -2,6 +2,8 @@ import { sendEmail } from "../utils/sendEmail.js";
 import Account from "../models/Account.js";
 import testReference from "../models/testReference.js";
 import Report from "../models/Report.js";
+import Patient from "../models/Patient.js";
+
 
 //create report
 export const createReport = async (req, res, next) => {
@@ -124,7 +126,10 @@ export const getAllReports = async (req, res, next) => {
 
 let getDangerousReports = async (req, res, next) => {
   try {
-    let DangerousReports = await reportModel.find({ critical: true });
+    let DangerousReports = await Report.find({ critical: true }).populate({
+        path: "patient",
+        select: "name phone" 
+      });
     res.status(200).json({
       message: "success",
       results: DangerousReports.length,
@@ -137,19 +142,12 @@ let getDangerousReports = async (req, res, next) => {
 let getPatientReport = async (req, res, next) => {
   try {
     const accountId = req.user._id;
-    const patient = await patientModel.findOne({ accountId });
+    const patient = await Patient.findOne({ accountId });
     if (!patient) {
       return res.status(404).json({ message: " patient profile not found" });
     }
-    let PatientReport = await reportModel
-      .find({ patient: patient._id })
-      .populate({
-        path: "patient",
-        populate: {
-          path: "accountId",
-          select: "email name  phone role -password",
-        },
-      });
+    let PatientReport = await Report
+      .find({ patient: patient._id });
     res.status(200).json({
       message: "done",
       results: PatientReport.length,
@@ -255,7 +253,7 @@ let editReport = async (req, res, next) => {
 let deleteReport = async (req, res, next) => {
   try {
     let { id } = req.params;
-    let deletedReport = await staffModel.findByIdAndDelete(id);
+    let deletedReport = await Report.findByIdAndDelete(id);
     if (!deletedReport) {
       return res.status(404).json({ message: "not found" });
     }
