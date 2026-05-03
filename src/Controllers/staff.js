@@ -1,9 +1,9 @@
-import  staffModel  from "../models/Staff.js";
+import  Staff  from "../models/Staff.js";
 let createStaff = async (req, res, next) => {
   try {
     let staffData = req.body;
     staffData.accountId = req.id;
-    let newStaff = await staffModel.create(staffData);
+    let newStaff = await Staff.create(staffData);
     res.status(201).json({ message: "successAdd", data: newStaff });
   } catch (error) {
     next(error);
@@ -11,7 +11,7 @@ let createStaff = async (req, res, next) => {
 };
 let getAllstaff = async (req, res, next) => {
   try {
-    let allSatff = await staffModel.find().select("-password -__v");
+    let allSatff = await Staff.find().select("-password -__v");
     res.status(200).json({ message: "success", data: allSatff });
   } catch (error) {
     next(error);
@@ -20,7 +20,7 @@ let getAllstaff = async (req, res, next) => {
 let editStaff = async (req, res, next) => {
   try {
     let { id } = req.params;
-    let updatedStaff = await staffModel.findByIdAndUpdate(id, req.body, {
+    let updatedStaff = await Staff.findByIdAndUpdate(id, req.body, {
       returnDocument: "after",
       runValidators: true,
     });
@@ -37,7 +37,7 @@ let editStaff = async (req, res, next) => {
 let deletedStaff = async (req, res, next) => {
   try {
     let { id } = req.params;
-    let removeStaff = await staffModel.findByIdAndDelete(id);
+    let removeStaff = await Staff.findByIdAndDelete(id);
     if (!removeStaff) {
       return res.status(404).json({ message: "not found" });
     }

@@ -234,7 +234,6 @@ const updatePassword = async (req, res) => {
   }
 };
 
-export { registerStaff, registerPatient, login, updateProfile, updatePassword };
+export { registerStaff, registerPatient, login, updateProfile, updatePassword, forgotPassword, resetPassword };
 
-export { forgotPassword, resetPassword };
 
