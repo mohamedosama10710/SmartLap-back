@@ -15,10 +15,7 @@ let forgotPassword = async (req, res, next) => {
         .json({ message: " this Email not found", email: email });
     }
     const resetToken = crypto.randomBytes(32).toString("hex");
-    const hashedResetToken = crypto
-      .createHash("sha256")
-      .update(resetToken)
-      .digest("hex");
+    const hashedResetToken = crypto.createHash("sha256").update(resetToken).digest("hex");
     user.resetPasswordToken = hashedResetToken;
     user.resetPasswordExpires = Date.now() + 10 * 60 * 1000;
     user.resetPasswordVerified = false;
@@ -27,7 +24,7 @@ let forgotPassword = async (req, res, next) => {
     await sendEmail({
       email: user.email,
       subject: "change Password",
-      message: `reset Token Valid For 10 min ${resetToken}`,
+      html: `reset Token Valid For 10 min ${resetToken}`,
     });
     res.status(200).json({ status: "Success", message: "reset token send" });
   } catch (error) {
@@ -56,12 +53,13 @@ let resetPassword = async (req, res, next) => {
     if (!user) {
       return res.status(400).json({ message: "reset code invalid or expired" });
     }
-    user.resetPasswordVerified = true;
-    user.password = password;
+
+    user.password = bcrypt.hash(password,10) ;
 
     user.resetPasswordToken = undefined;
     user.resetPasswordExpires = undefined;
-    user.resetPasswordVerified = undefined;
+    user.resetPasswordVerified = true;
+
 
     await user.save();
     const loginToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
@@ -237,4 +235,3 @@ const updatePassword = async (req, res) => {
 export { registerStaff, registerPatient, login, updateProfile, updatePassword };
 
 export { forgotPassword, resetPassword };
-
