@@ -8,7 +8,8 @@ import refRoutes from "./src/routes/refRouter.js";
 import reportRoutes from "./src/routes/reportRoutes.js";
 import accountRoutes from "./src/routes/accountRoutes.js";
 import patientRoutes from "./src/routes/patientRoutes.js";
-
+import labSettingsRoutes from "./src/routes/labSettingsRoutes.js"
+import AppointmentRoutes from "./src/routes/AppointmentRoutes.js";
 dotenv.config();
 
 connectDB();
@@ -26,7 +27,8 @@ app.use("/staff", staffRoutes);
 app.use("/ref", refRoutes);
 app.use("/reports", reportRoutes);
 app.use("/patients", patientRoutes);
-
+app.use("/labSettings",labSettingsRoutes)
+app.use("/appointment",AppointmentRoutes)
 
 
 

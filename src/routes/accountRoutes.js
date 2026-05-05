@@ -10,7 +10,7 @@ const router = express.Router();
 router.post("/login", login);
 router.post("/registerStaff", auth, restrictTo("admin"), registerStaff);
 
-router.post("/registerPatient",auth,restrictTo("admin","staff"), registerPatient);
+router.post("/registerPatient", registerPatient);
 
 //update (email,phone,number)
 router.patch("/updateProfile", auth, updateProfile);
