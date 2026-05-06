@@ -15,9 +15,10 @@ const accountSchema = new mongoose.Schema({
   email: {
     type: String,
     unique: true,
+    sparse: true,
     validate: {
       validator: function (email) {
-        return /^[a-zA-Z]{3,10}[0-9]{0,3}(@)(gmail|yahoo)\.com$/.test(email);
+        return /^[a-zA-Z]{3,20}[0-9]*(@)(gmail|yahoo)\.com$/.test(email);
       },
       message: (prop) => `${prop.value} is not valid`,
     },
@@ -25,6 +26,7 @@ const accountSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+    minlength: 4,
     
   },
   role: {
@@ -44,7 +46,6 @@ const accountSchema = new mongoose.Schema({
   },
   resetPasswordToken: String,
   resetPasswordExpires: Date,
-  resetPasswordVerified:Boolean,
   createdAt: {
     type: Date,
     default: Date.now,

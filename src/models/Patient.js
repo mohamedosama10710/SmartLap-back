@@ -5,6 +5,7 @@ const patientSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Account",
     required: true,
+    unique: true
   },
   gender: {
     type: String,
@@ -17,7 +18,6 @@ const patientSchema = new mongoose.Schema({
   },
   chronicDiseases: {
     type: [String],
-    required: true,
     default: [],
   },
   previousSurgeries: {
@@ -36,7 +36,6 @@ const patientSchema = new mongoose.Schema({
   },
   medications: {
     type: [String],
-    enum: ["antibiotic", "blood_thinner", "other"],
     default: [],
   },
 });

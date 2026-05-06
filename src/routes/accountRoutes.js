@@ -10,14 +10,13 @@ const router = express.Router();
 router.post("/login", login);
 router.post("/registerStaff", auth, restrictTo("admin"), registerStaff);
 
-router.post("/registerPatient",auth,restrictTo("admin","staff"), registerPatient);
+router.post("/registerPatient" ,registerPatient);
 
 //update (email,phone,number)
 router.patch("/updateProfile", auth, updateProfile);
 //update (password)
 router.patch("/updatePassword", auth, updatePassword);
 
-// router.delete("/delete/:id", auth, restrictTo("admin"))
 
 //  Forgot Password Flow
 router.post("/forgotPassword", forgotPassword);     // 1

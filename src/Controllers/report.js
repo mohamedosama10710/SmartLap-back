@@ -4,7 +4,6 @@ import testReference from "../models/testReference.js";
 import Report from "../models/Report.js";
 import Patient from "../models/Patient.js";
 
-
 //create report
 export const createReport = async (req, res, next) => {
   try {
@@ -85,11 +84,25 @@ export const createReport = async (req, res, next) => {
 
     const newReport = await Report.create({
       patient,
-      referredBy,
-      tests: processedTests,
-      reportStatus,
       createdBy: staffId,
+      tests: processedTests,
+      referredBy,
+      reportStatus,
     });
+    const patientData = await Patient.findById(patient).populate({
+  path: "accountId",
+  select: "name email"
+});
+
+if (patientData?.accountId?.email) {
+  const loginUrl = "http://localhost:5173/login";
+
+  await sendEmail({
+    email: patientData.accountId.email,
+    subject: "Your Lab Report is Ready",
+    html: reportReadyEmail(patientData.accountId.name, loginUrl),
+  });
+}
 
     res.status(201).json({
       status: "success",
@@ -106,7 +119,11 @@ export const getAllReports = async (req, res, next) => {
     const reports = await Report.find()
       .populate({
         path: "patient",
-        select: "name phone age gender",
+        select: "age gender weight height medications",
+        populate: {
+          path: "accountId",
+          select: "name phone ",
+        },
       })
       .populate({
         path: "createdBy",
@@ -126,9 +143,15 @@ export const getAllReports = async (req, res, next) => {
 
 let getDangerousReports = async (req, res, next) => {
   try {
-    let DangerousReports = await Report.find({ critical: true }).populate({
+    let DangerousReports = await Report.find({ "tests.critical": true })
+      .populate({
         path: "patient",
-        select: "name phone" 
+        select: "age gender weight height medications",
+        populate: { path: "accountId", select: "name phone" },
+      })
+      .populate({
+        path: "createdBy",
+        select: "name role",
       });
     res.status(200).json({
       message: "success",
@@ -146,8 +169,7 @@ let getPatientReport = async (req, res, next) => {
     if (!patient) {
       return res.status(404).json({ message: " patient profile not found" });
     }
-    let PatientReport = await Report
-      .find({ patient: patient._id });
+    let PatientReport = await Report.find({ patient: patient._id });
     res.status(200).json({
       message: "done",
       results: PatientReport.length,
@@ -167,10 +189,7 @@ let editReport = async (req, res, next) => {
     if (tests && tests.length > 0) {
       processedTests = [];
       for (const item of tests) {
-        const reference = await mongoose
-          .model("TestReference")
-          .findById(item.testId);
-
+        const reference = await testReference.findById(item.testId);
         if (!reference) {
           return res.status(404).json({
             message: `Test reference not found for ID: ${item.testId}`,
@@ -257,7 +276,7 @@ let deleteReport = async (req, res, next) => {
     if (!deletedReport) {
       return res.status(404).json({ message: "not found" });
     }
-    res.status(200).json({ message: "Staff deleted successfully " });
+    res.status(200).json({ message: "Report deleted successfully " });
   } catch (error) {
     next(error);
   }
@@ -287,7 +306,7 @@ let sendPatientEmail = async (req, res, next) => {
     await sendEmail({
       email: email,
       subject: subject,
-      message: htmlMessage,
+      html: htmlMessage,
     });
     res.status(200).json({
       status: "Success",

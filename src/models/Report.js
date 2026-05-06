@@ -11,6 +11,7 @@ const testResultSchema = new mongoose.Schema({
   result: {
     type: Number,
     required: true,
+    default: null
   },
 
   status: {
@@ -60,7 +61,7 @@ const reportSchema = new mongoose.Schema(
   {
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Staff",
+      ref: "Account",
       required: true,
     },
     patient: {
