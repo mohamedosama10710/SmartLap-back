@@ -39,6 +39,14 @@ const accountsData = [
     role: "admin",
     isFirstLogin: false,
   },
+  {
+    name: "omar ayoub",
+    phone: "0101111245",
+    email: "omarayoub@gmail.com",
+    password,
+    role: "admin",
+    isFirstLogin: false,
+  },
 
   {
     name: "Sara Ali",

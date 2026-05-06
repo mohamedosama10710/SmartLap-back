@@ -1,5 +1,5 @@
 import express from "express";
-import { auth, restrictTo } from "../middlewares/authMiddleware.js";
+import { auth, restrictTo } from "../Middlewares/authMiddleware.js";
 import{resetPassword,forgotPassword} from "../Controllers/account.js"
 import { registerStaff, registerPatient, login, updateProfile, updatePassword } from "../Controllers/account.js";
 

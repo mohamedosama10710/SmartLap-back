@@ -132,11 +132,11 @@ const login = async (req, res) => {
         status: "fail",
         message: "Please provide email and password",
       });
-    } else {
+    } 
       const user = await Account.findOne({
         $or: [{ email: identifier }, { patientId: identifier }],
       });
-    }
+    
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({
         status: "fail",
