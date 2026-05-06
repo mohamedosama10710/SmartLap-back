@@ -7,7 +7,7 @@ router.post("/",auth,restrictTo("patient"),createAppointment);
 //get LabDailyAppointments for staff and admin 
 router.get("/dailySchedule",auth,restrictTo("staff","admin"),getLabDailyAppointments);
 //cancelAppointment foor patient 
-router.patch("/cancel/:appointmentId",auth,restrictTo("patient"),cancelAppointment);
+router.patch("/cancel",auth,restrictTo("patient"),cancelAppointment);
 //get appointmenta for PPATIENT
 router.get("/myappointments",auth,restrictTo("patient"),getappointmentsPatient)
 

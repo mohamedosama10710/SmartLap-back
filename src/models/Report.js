@@ -10,8 +10,7 @@ const testResultSchema = new mongoose.Schema({
   // النتيجة الفعلية
   result: {
     type: Number,
-    required: true,
-    default: null
+  
   },
 
   status: {
