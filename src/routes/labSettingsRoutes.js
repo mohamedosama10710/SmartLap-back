@@ -1,5 +1,5 @@
 import express from "express";
-import { auth, restrictTo } from "../middlewares/authMiddleware.js";
+import { auth, restrictTo } from "../middlewares/middleware.js";
 import { getSchedule, updateSchedule } from "../Controllers/labSettings.js";
 
 const router = express.Router();
