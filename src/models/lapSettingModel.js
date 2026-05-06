@@ -24,4 +24,4 @@ ref:"staff"
 },
 },
 { timestamps: true });
-export default mongoose.model("labSettings", labSettingsSchema);
+export default mongoose.model("LabSettings", labSettingsSchema);

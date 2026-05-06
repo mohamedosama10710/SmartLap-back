@@ -10,7 +10,7 @@ const testResultSchema = new mongoose.Schema({
   // النتيجة الفعلية
   result: {
     type: Number,
-    required: true,
+  
   },
 
   status: {
@@ -60,7 +60,7 @@ const reportSchema = new mongoose.Schema(
   {
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Staff",
+      ref: "Account",
       required: true,
     },
     patient: {

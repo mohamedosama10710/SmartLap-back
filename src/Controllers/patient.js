@@ -16,7 +16,7 @@ export const createPatient = async (req, res, next) => {
 //get all patient
 export const getAllPatients = async (req, res, next) => {
   try {
-    const patients = await Patient.find();
+    const patients = await Patient.find().populate("accountId", "name email phone");
     res.status(200).json({
       status: "success",
       results: patients.length,
@@ -79,7 +79,7 @@ export const updatePatientProfile = async (req, res, next) => {
 // get patient by id
 export const getPatientById = async (req, res, next) => {
   try {
-    const patient = await Patient.findById(req.params.id);
+    const patient = await Patient.findById(req.params.id).populate("accountId", "name email phone");
     if (!patient) {
       const error = new Error("No patient found with that ID");
       error.statusCode = 404;
@@ -128,7 +128,6 @@ export const deletePatient = async (req, res, next) => {
     }
     res.status(204).json({
       status: "success",
-      data: null,
     });
   } catch (error) {
     next(error);

@@ -5,12 +5,18 @@ const staffSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Account",
     required: true,
+    unique: true,
   },
   nationalId: {
     type: String,
     required: true,
     unique: true,
     match: [/^[0-9]{14}$/, "National ID must be exactly 14 digits"],
+  },
+  department: {
+    type: String,
+    enum: ["Reception", "Lab", "Sampling", "Administration"],
+    required: true,
   },
   shift: {
     type: String,
@@ -33,10 +39,12 @@ const staffSchema = new mongoose.Schema({
   salary: {
     type: Number,
     required: true,
+    min: 0,
   },
   bonus: {
     type: Number,
     default: 0,
+    min: 0,
   },
   payDay: {
     type: Number,

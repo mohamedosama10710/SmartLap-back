@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import { sendEmail } from "../utils/sendEmail.js";
 import bcrypt from "bcrypt";
+import htmlResetPassword from "../utils/htmlEmailPassword.js";
 
 let forgotPassword = async (req, res, next) => {
   let user;
@@ -10,9 +11,9 @@ let forgotPassword = async (req, res, next) => {
     let { email } = req.body;
     user = await Account.findOne({ email });
     if (!user) {
-      return res
-        .status(404)
-        .json({ message: " this Email not found", email: email });
+      return res.status(200).json({
+        message: "If this email exists, reset instructions have been sent.",
+      });
     }
     const resetToken = crypto.randomBytes(32).toString("hex");
     const hashedResetToken = crypto
@@ -21,20 +22,19 @@ let forgotPassword = async (req, res, next) => {
       .digest("hex");
     user.resetPasswordToken = hashedResetToken;
     user.resetPasswordExpires = Date.now() + 10 * 60 * 1000;
-    user.resetPasswordVerified = false;
-    await user.save();
+    await user.save({ validateBeforeSave: false });
 
+    const resetURL = `http://localhost:5173/reset-password/${resetToken}`;
     await sendEmail({
       email: user.email,
       subject: "change Password",
-      message: `reset Token Valid For 10 min ${resetToken}`,
+      html: htmlResetPassword(resetURL),
     });
     res.status(200).json({ status: "Success", message: "reset token send" });
   } catch (error) {
     if (user) {
       user.resetPasswordToken = undefined;
       user.resetPasswordExpires = undefined;
-      user.resetPasswordVerified = undefined;
       await user.save({ validateBeforeSave: false });
     }
 
@@ -56,12 +56,11 @@ let resetPassword = async (req, res, next) => {
     if (!user) {
       return res.status(400).json({ message: "reset code invalid or expired" });
     }
-    user.resetPasswordVerified = true;
-    user.password = password;
+
+    user.password = await bcrypt.hash(password, 10);
 
     user.resetPasswordToken = undefined;
     user.resetPasswordExpires = undefined;
-    user.resetPasswordVerified = undefined;
 
     await user.save();
     const loginToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
@@ -84,6 +83,7 @@ const registerStaff = async (req, res) => {
     res.status(201).json({
       status: "success",
       data: {
+        id: staff._id,
         email: staff.email,
         name: staff.name,
         phone: staff.phone,
@@ -100,6 +100,7 @@ const registerStaff = async (req, res) => {
 const registerPatient = async (req, res) => {
   // Logic to register a patient
   const { password } = req.body;
+  req.body.patientId = `PT-${Date.now().toString().slice(-6)}`;
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
   req.body.password = hashedPassword;
@@ -108,6 +109,7 @@ const registerPatient = async (req, res) => {
     res.status(201).json({
       status: "success",
       data: {
+        id: patient._id,
         email: patient.email,
         name: patient.name,
         phone: patient.phone,
@@ -123,35 +125,37 @@ const registerPatient = async (req, res) => {
 };
 const login = async (req, res) => {
   // Logic to authenticate a user and generate a token
-  const { email, password } = req.body;
+  const { identifier, password } = req.body;
   try {
-    if (!email || !password) {
+    if (!identifier || !password) {
       return res.status(400).json({
         status: "fail",
         message: "Please provide email and password",
       });
+    } 
+      const user = await Account.findOne({
+        $or: [{ email: identifier }, { patientId: identifier }],
+      });
+    
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return res.status(401).json({
+        status: "fail",
+        message: "Incorrect email or password",
+      });
     } else {
-      const user = await Account.findOne({ email });
-      if (!user || !(await bcrypt.compare(password, user.password))) {
-        return res.status(401).json({
-          status: "fail",
-          message: "Incorrect email or password",
-        });
-      } else {
-        // Generate token logic here (e.g., JWT)
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-          expiresIn: process.env.JWT_EXPIRES_IN,
-        });
-        res.status(200).json({
-          status: "success",
-          token,
-          data: {
-            email: user.email,
-            name: user.name,
-            isFirstLogin: user.isFirstLogin,
-          },
-        });
-      }
+      // Generate token logic here (e.g., JWT)
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRES_IN,
+      });
+      res.status(200).json({
+        status: "success",
+        token,
+        data: {
+          email: user.email,
+          name: user.name,
+          isFirstLogin: user.isFirstLogin,
+        },
+      });
     }
   } catch (err) {
     res.status(500).json({
@@ -234,6 +238,12 @@ const updatePassword = async (req, res) => {
   }
 };
 
-export { registerStaff, registerPatient, login, updateProfile, updatePassword, forgotPassword, resetPassword };
-
-
+export {
+  registerStaff,
+  registerPatient,
+  login,
+  updateProfile,
+  updatePassword,
+  forgotPassword,
+  resetPassword,
+};

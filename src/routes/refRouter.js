@@ -1,5 +1,5 @@
 import express from "express";
-import { auth, restrictTo } from "../middlewares/authMiddleware.js";
+import { auth, restrictTo } from "../Middlewares/authMiddleware.js";
 import { createRef, getAllRefs, editRef, deleteRef } from "../Controllers/ref.js";
 const router = express.Router();
 

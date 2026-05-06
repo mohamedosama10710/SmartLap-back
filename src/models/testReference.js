@@ -25,6 +25,12 @@ const testReferenceSchema = new mongoose.Schema({
     low: Number,
     high: Number,
   },
+  adviceTemplates: {
+  normal: String,
+  low: String,
+  high: String,
+  critical: String,
+},
 
   referral: String, // مثلا: "Cardiology", "Oncology"
 
