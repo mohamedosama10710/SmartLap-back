@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./src/config/dp.js";
-import errorHandler from "./src/middlewares/errorHandler.js";
+import errorHandler from "./src/middlewares/error.js";
 import staffRoutes from "./src/routes/staff.js";
 import refRoutes from "./src/routes/refRouter.js";
 import reportRoutes from "./src/routes/reportRoutes.js";
