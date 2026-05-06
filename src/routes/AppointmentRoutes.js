@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-import { auth, restrictTo } from "../middlewares/authMiddleware.js";
+import { auth, restrictTo } from "../middlewares/middleware.js";
 import {
   createAppointment,
   getLabDailyAppointments,
