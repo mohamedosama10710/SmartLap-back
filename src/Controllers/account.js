@@ -159,6 +159,9 @@ const login = async (req, res) => {
         data: {
           email: user.email,
           name: user.name,
+          role: user.role,
+          phone: user.phone,
+          patientId: user.patientId,
           isFirstLogin: user.isFirstLogin,
         },
       });
@@ -192,6 +195,7 @@ const updateProfile = async (req, res) => {
         email: updatedProfile.email,
         name: updatedProfile.name,
         phone: updatedProfile.phone,
+        
       },
     });
   } catch (err) {
