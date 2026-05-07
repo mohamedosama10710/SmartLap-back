@@ -42,7 +42,9 @@ const accountSchema = new mongoose.Schema({
   },
   isFirstLogin: {
     type: Boolean,
-    default: true,
+    default: function () {
+      return this.role === "staff"? true : false;
+    }
   },
   resetPasswordToken: String,
   resetPasswordExpires: Date,

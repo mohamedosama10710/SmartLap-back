@@ -105,7 +105,12 @@ const registerPatient = async (req, res) => {
   const hashedPassword = await bcrypt.hash(password, salt);
   req.body.password = hashedPassword;
   try {
+     if (req.headers.authorization) {
+       req.body.isFirstLogin = true;
+    }
     const patient = await Account.create(req.body);
+   
+  
     res.status(201).json({
       status: "success",
       data: {
@@ -114,6 +119,7 @@ const registerPatient = async (req, res) => {
         name: patient.name,
         phone: patient.phone,
         patientId: patient.patientId,
+        isFirstLogin: patient.isFirstLogin,
       },
     });
   } catch (err) {
