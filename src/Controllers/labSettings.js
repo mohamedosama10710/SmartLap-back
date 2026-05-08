@@ -1,6 +1,7 @@
 import lapsettingsModel from "../models/lapSettingModel.js";
 import appointmentModel from "../models/Appointment.js";
 
+
 export const getLabSettings = async (req, res, next) => {
   try {
     const settings = await lapsettingsModel.findOne();
