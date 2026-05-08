@@ -4,7 +4,7 @@ import Appointment from "../models/Appointment.js";
 
 export const createAppointment = async (req, res, next) => {
   try {
-    let { appointmentDate, time } = req.body;
+    let { appointmentDate, time  } = req.body;
     const patientAccountId = req.user._id;
     //test there appointment in this time or no
     const existingAppointment = await Appointment.findOne({

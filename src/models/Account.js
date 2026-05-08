@@ -18,7 +18,7 @@ const accountSchema = new mongoose.Schema({
     sparse: true,
     validate: {
       validator: function (email) {
-        return /^[a-zA-Z]{3,20}[0-9]*(@)(gmail|yahoo)\.com$/.test(email);
+        return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
       },
       message: (prop) => `${prop.value} is not valid`,
     },
