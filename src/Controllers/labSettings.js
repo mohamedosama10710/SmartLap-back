@@ -1,6 +1,28 @@
 import lapsettingsModel from "../models/lapSettingModel.js";
 import appointmentModel from "../models/Appointment.js";
 
+
+
+
+export const getLabSettings = async (req, res, next) => {
+  try {
+    const settings = await lapsettingsModel.findOne();
+
+    if (!settings) {
+      return res.status(404).json({
+        message: "Lab settings not found",
+      });
+    }
+
+    res.status(200).json({
+      message: "Success",
+      data: settings,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const updateSchedule = async (req, res, next) => {
   try {
     let { workingHours, slotDuration, offDays } = req.body;
