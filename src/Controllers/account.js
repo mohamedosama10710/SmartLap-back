@@ -66,7 +66,16 @@ let resetPassword = async (req, res, next) => {
     const loginToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRES_IN,
     });
-    res.status(200).json({ message: "success", token: loginToken });
+    res.status(200).json({
+      message: "success", token: loginToken, data: {
+        email: user.email,
+        name: user.name,
+        role: user.role,
+        phone: user.phone,
+        patientId: user.patientId,
+        isFirstLogin: user.isFirstLogin,
+      }
+    });
   } catch (error) {
     next(error);
   }
@@ -140,7 +149,7 @@ const login = async (req, res) => {
       });
     } 
       const user = await Account.findOne({
-        $or: [{ email: identifier }, { patientId: identifier }],
+        $or: [{ email: identifier }, { patientId: identifier },{phone:identifier}],
       });
     
     if (!user || !(await bcrypt.compare(password, user.password))) {
@@ -195,7 +204,8 @@ const updateProfile = async (req, res) => {
         email: updatedProfile.email,
         name: updatedProfile.name,
         phone: updatedProfile.phone,
-        
+        patientId: updatedProfile.patientId,
+        isFirstLogin: updatedProfile.isFirstLogin,
       },
     });
   } catch (err) {
