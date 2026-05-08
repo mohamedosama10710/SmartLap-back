@@ -3,6 +3,9 @@ import {
   updateSchedule,
   getLabSettings
 } from "../Controllers/labSettings.js";
+import express from "express";
+import { auth, restrictTo } from "../middlewares/middleware.js";
+
 
 const router = express.Router();
 
