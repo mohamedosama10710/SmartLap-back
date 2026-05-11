@@ -12,7 +12,7 @@ import labSettingsRoutes from "./src/routes/labSettingsRoutes.js";
 import AppointmentRoutes from "./src/routes/AppointmentRoutes.js";
 dotenv.config();
 
-connectDB();
+await connectDB();
 
 const app = express();
 
