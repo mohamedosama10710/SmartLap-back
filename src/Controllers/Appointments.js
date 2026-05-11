@@ -4,20 +4,22 @@ import Appointment from "../models/Appointment.js";
 
 export const createAppointment = async (req, res, next) => {
   try {
-    let { appointmentDate, time  } = req.body;
+    console.log(req.user);
+    let { appointmentDate, time, appointmentType, address, notes } = req.body;
     const patientAccountId = req.user._id;
-    //test there appointment in this time or no
+
     const existingAppointment = await Appointment.findOne({
       appointmentDate,
       time,
       status: { $ne: "Cancelled" },
     });
+
     if (existingAppointment) {
-      return res
-        .status(400)
-        .json({ Message: "this appointmenta is existing already" });
+      return res.status(400).json({
+        message: "This appointment already exists",
+      });
     }
-    //test if this patient already has appointmentin this day
+
     const patientHasAppointment = await Appointment.findOne({
       patient: patientAccountId,
       appointmentDate,
@@ -25,20 +27,30 @@ export const createAppointment = async (req, res, next) => {
     });
 
     if (patientHasAppointment) {
-      return res
-        .status(400)
-        .json({ message: "you hav appointment in this day already" });
+      return res.status(400).json({
+        message: "You already have an appointment on this day",
+      });
     }
-    const saveAppointment = await Appointment.create(req.body);
+  
+
+    const saveAppointment = await Appointment.create({
+      patient: patientAccountId,
+      appointmentDate,
+      time,
+      appointmentType,
+      address,
+      notes
+    });
+
     res.status(201).json({
       message: "Appointment created successfully",
       data: saveAppointment,
     });
+
   } catch (error) {
     next(error);
   }
 };
-
 export const getLabDailyAppointments = async (req, res, next) => {
   try {
     let { appointmentDate } = req.body;
