@@ -3,8 +3,8 @@ import nodemailer from "nodemailer";
 const sendEmail = async (options) => {
   try {
     const transporter = nodemailer.createTransport({
-      host: "smtp.sendgrid.net",
-      port: 587,
+      host: process.env.EMAIL_HOST,
+      port: process.env.EMAIL_PORT || 587,
       secure: false,
       auth: {
         user: "apikey", // ثابت زي ما هو
@@ -13,7 +13,7 @@ const sendEmail = async (options) => {
     });
 
     const emailOptions = {
-      from: process.env.EMAIL_HOST || '"Smart Lab" <your_verified_email@yourdomain.com>',
+      from: process.env.EMAIL_USER || '"Smart Lab" <your_verified_email@yourdomain.com>',
       to: options.email,
       subject: options.subject,
       html: options.html,
