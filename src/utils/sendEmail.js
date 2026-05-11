@@ -1,33 +1,32 @@
 import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+dotenv.config();
+console.log(process.env.EMAIL_USER);
+console.log(process.env.EMAIL_PASSWORD);
 
-const sendEmail = async (options) => {
+let sendEmail = async (options) => {
   try {
-    const transporter = nodemailer.createTransport({
-      host: "smtp.sendgrid.net",
-      port: 587,
-      secure: false,
+    const tranporter = nodemailer.createTransport({
+      host: process.env.EMAIL_HOST,
+      port: process.env.EMAIL_PORT,
+      secure: true,
       auth: {
-        user: "apikey", // ثابت زي ما هو
-        pass: process.env.SENDGRID_API_KEY,
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD,
       },
+     
     });
 
-    const emailOptions = {
-      from: process.env.EMAIL_HOST || '"Smart Lab" <your_verified_email@yourdomain.com>',
+    const emailoptions = {
+      from: '"Smart Lab " <smartlap458@gmail.com>',
       to: options.email,
       subject: options.subject,
       html: options.html,
     };
-
-    const info = await transporter.sendMail(emailOptions);
-
-    console.log("Email sent:", info.messageId);
-    return info;
-
+    await tranporter.sendMail(emailoptions);
   } catch (error) {
-    console.error("Detailed Email Error:", error);
-    throw new Error("Failed to send email");
+    console.error("Detailed Email Error:", error); // ضيف السطر ده ضروري
+    throw error;
   }
 };
-
 export { sendEmail };

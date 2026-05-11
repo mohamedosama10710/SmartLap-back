@@ -30,6 +30,7 @@ let forgotPassword = async (req, res, next) => {
       subject: "change Password",
       html: htmlResetPassword(resetURL),
     });
+    
     res.status(200).json({ status: "Success", message: "reset token send" });
   } catch (error) {
     if (user) {
