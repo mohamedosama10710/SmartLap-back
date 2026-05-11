@@ -6,6 +6,10 @@ const AppointmentSchema = new mongoose.Schema(
       ref: "Account",
       required: [true, "Appointment must belong to an account"],
     },
+     confirmedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Staff",
+    },
     appointmentDate: {
       type: String,
       required: [true, "Please provide the appointment date"],
@@ -32,10 +36,7 @@ const AppointmentSchema = new mongoose.Schema(
       default: "Pending",
     },
     notes: String,
-    confirmedBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Staff",
-    },
+   
   },
   { timestamps: true },
 );
