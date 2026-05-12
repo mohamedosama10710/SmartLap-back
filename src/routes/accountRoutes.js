@@ -25,4 +25,5 @@ router.patch("/updatePassword", auth, updatePassword);
 router.post("/forgotPassword", forgotPassword); // 1
 router.patch("/resetPassword/:token", resetPassword); // 2
 
+router.delete("/deleteStaff/:id", auth, restrictTo("admin"), deleteStaff);
 export default router;

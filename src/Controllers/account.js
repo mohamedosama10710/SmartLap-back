@@ -106,6 +106,27 @@ const registerStaff = async (req, res) => {
     });
   }
 };
+const deleteStaff = async (req, res) => {
+  try {
+    const staff = await Account.findByIdAndDelete(req.params.id);
+    if (!staff) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Staff member not found",
+      });
+    } else {
+      res.status(200).json({
+        status: "success",
+        message: "Staff member deleted successfully",
+      });
+    }
+  } catch (err) {
+      res.status(400).json({
+        status: "fail",
+        message: err.message,
+      });
+    }
+  };
 
 const registerPatient = async (req, res) => {
   // Logic to register a patient
