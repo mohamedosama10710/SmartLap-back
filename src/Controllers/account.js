@@ -116,7 +116,7 @@ const deleteStaff = async (req, res) => {
       });
     } else {
       res.status(200).json({
-        status: "success",
+        status: "deleted-success",
         message: "Staff member deleted successfully",
       });
     }
