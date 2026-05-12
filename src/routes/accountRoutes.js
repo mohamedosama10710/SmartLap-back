@@ -8,6 +8,7 @@ import {
   updateProfile,
   updatePassword,
 } from "../Controllers/account.js";
+import { deletedStaff } from "../Controllers/staff.js";
 
 const router = express.Router();
 
@@ -25,5 +26,5 @@ router.patch("/updatePassword", auth, updatePassword);
 router.post("/forgotPassword", forgotPassword); // 1
 router.patch("/resetPassword/:token", resetPassword); // 2
 
-router.delete("/deleteStaff/:id", auth, restrictTo("admin"), deleteStaff);
+router.delete("/deleteStaff/:id", auth, restrictTo("admin"), deletedStaff);
 export default router;
