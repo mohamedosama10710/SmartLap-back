@@ -47,7 +47,7 @@ let deletedStaff = async (req, res, next) => {
   }
 };
 
-const getStaffProfile =async (req ,res) => {
+const getStaffProfile =async (req ,res,next) => {
   try {
     const staff = await Staff.findOne({ accountId:req.user._id }).populate(
       "accountId",
