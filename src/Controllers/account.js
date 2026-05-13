@@ -160,6 +160,30 @@ const registerPatient = async (req, res) => {
     });
   }
 };
+const deletedPatient = async (req, res) => {
+  try {
+    const patient = await Account.findByIdAndDelete(req.params.id);
+    if (!patient) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Patient not found",
+      });
+    } else {
+      res.status(200).json({
+        status: "deleted-success",
+        message: "Patient deleted successfully",
+      });
+    }
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err.message,
+    });
+  }
+}
+
+
+        
 const login = async (req, res) => {
   // Logic to authenticate a user and generate a token
   const { identifier, password } = req.body;
@@ -288,4 +312,6 @@ export {
   updatePassword,
   forgotPassword,
   resetPassword,
+  deletedPatient,
+  deleteStaff,
 };

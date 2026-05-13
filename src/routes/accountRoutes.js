@@ -1,6 +1,6 @@
 import express from "express";
 import { auth, restrictTo } from "../middlewares/middleware.js";
-import { resetPassword, forgotPassword } from "../Controllers/account.js";
+import { resetPassword, forgotPassword, deletedPatient } from "../Controllers/account.js";
 import {
   registerStaff,
   registerPatient,
@@ -27,4 +27,5 @@ router.post("/forgotPassword", forgotPassword); // 1
 router.patch("/resetPassword/:token", resetPassword); // 2
 
 router.delete("/deleteStaff/:id", auth, restrictTo("admin"), deletedStaff);
+router.delete("/deletePatient/:id", auth, restrictTo("admin","staff"), deletedPatient);
 export default router;
