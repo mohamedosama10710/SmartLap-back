@@ -46,4 +46,26 @@ let deletedStaff = async (req, res, next) => {
     next(error);
   }
 };
-export { createStaff, getAllstaff, editStaff, deletedStaff };
+
+const getStaffProfile =async (req ,res) => {
+  try {
+    const staff = await Staff.findOne({ accountId:req.user._id }).populate(
+      "accountId",
+      "name phone email ",
+    );
+
+    if (!staff) {
+      const error = new Error("staff profile not found");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    res.status(200).json({
+      status: "success",
+      data:  staff ,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+export { createStaff, getAllstaff, editStaff, deletedStaff ,getStaffProfile  };

@@ -5,6 +5,7 @@ import {
   getAllstaff,
   editStaff,
   deletedStaff,
+  getStaffProfile,
 } from "../Controllers/staff.js";
 const router = express.Router();
 
@@ -20,5 +21,7 @@ router.patch("/:id", auth, restrictTo("admin"), editStaff);
 
 //delete staff
 router.delete("/:id", auth, restrictTo("admin"), deletedStaff);
+
+router.get("/staffProfile", auth, restrictTo("admin,staff"),getStaffProfile );
 
 export default router;
