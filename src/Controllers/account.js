@@ -25,11 +25,15 @@ let forgotPassword = async (req, res, next) => {
     await user.save({ validateBeforeSave: false });
 
     const resetURL = `http://localhost:5173/reset-password/${resetToken}`;
+    
+    console.log("BEFORE SEND EMAIL");
+
     await sendEmail({
       email: user.email,
       subject: "change Password",
       html: htmlResetPassword(resetURL),
     });
+    console.log("AFTER SEND EMAIL");
     
     res.status(200).json({ status: "Success", message: "reset token send" });
   } catch (error) {
