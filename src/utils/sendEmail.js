@@ -1,32 +1,28 @@
-import nodemailer from "nodemailer";
-import dotenv from "dotenv";
-dotenv.config();
-console.log(process.env.EMAIL_USER);
-console.log(process.env.EMAIL_PASSWORD);
+import sgMail from '@sendgrid/mail';
+import dotenv from 'dotenv';
 
-let sendEmail = async (options) => {
+dotenv.config();
+
+console.log('SENDGRID LOADED');
+console.log(process.env.SENDGRID_API_KEY?.slice(0, 10));
+console.log(process.env.EMAIL_FROM);
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+export const sendEmail = async ({ email, subject, html }) => {
   try {
-    const tranporter = nodemailer.createTransport({
-      host: process.env.EMAIL_HOST,
-      port: process.env.EMAIL_PORT,
-      secure: true,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD,
-      },
-     
+    console.log('Sending with SendGrid to:', email);
+
+    const response = await sgMail.send({
+      to: email,
+      from: process.env.EMAIL_FROM,
+      subject,
+      html
     });
 
-    const emailoptions = {
-      from: '"Smart Lab " <smartlap458@gmail.com>',
-      to: options.email,
-      subject: options.subject,
-      html: options.html,
-    };
-    await tranporter.sendMail(emailoptions);
+    console.log('SUCCESS:', response);
   } catch (error) {
-    console.error("Detailed Email Error:", error); // ضيف السطر ده ضروري
+    console.log('SENDGRID ERROR:', error.response?.body || error);
     throw error;
   }
 };
-export { sendEmail };
