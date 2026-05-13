@@ -16,7 +16,7 @@ export const createPatient = async (req, res, next) => {
 //get all patient
 export const getAllPatients = async (req, res, next) => {
   try {
-    const patients = await Patient.find().populate("accountId", "name email phone");
+    const patients = await Patient.find().populate("accountId", "name email phone patientId");
     res.status(200).json({
       status: "success",
       results: patients.length,
