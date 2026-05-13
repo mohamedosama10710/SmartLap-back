@@ -22,6 +22,6 @@ router.patch("/:id", auth, restrictTo("admin"), editStaff);
 //delete staff
 router.delete("/:id", auth, restrictTo("admin"), deletedStaff);
 
-router.get("/staffProfile", auth, restrictTo("staff"),getStaffProfile );
+router.get("/staffProfile", auth, restrictTo("staff","admin"),getStaffProfile );
 
 export default router;
