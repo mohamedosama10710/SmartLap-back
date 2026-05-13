@@ -148,7 +148,7 @@ for (let i = 0; i < 20; i++) {
     time: `${9 + (i % 6)}:00`,
     appointmentType: i % 4 === 0 ? "Home-Visit" : "Lab-Visit",
     address: i % 4 === 0 ? "Nasr City, Cairo" : undefined,
-    status: ["Pending", "Confirmed", "Completed"][i % 3],
+    status: ["canceld", "Completed"][i % 3],
   });
 }
 
