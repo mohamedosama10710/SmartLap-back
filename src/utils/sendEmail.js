@@ -1,28 +1,29 @@
-import sgMail from '@sendgrid/mail';
-import dotenv from 'dotenv';
+import nodemailer from "nodemailer";
+import dotenv from "dotenv";
 
 dotenv.config();
 
-console.log('SENDGRID LOADED');
-console.log(process.env.SENDGRID_API_KEY?.slice(0, 10));
-console.log(process.env.EMAIL_FROM);
-
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const transporter = nodemailer.createTransport({
+  host: "smtp.sendgrid.net",
+  port: 587,
+  auth: {
+    user: "apikey",
+    pass: process.env.SENDGRID_API_KEY,
+  },
+});
 
 export const sendEmail = async ({ email, subject, html }) => {
   try {
-    console.log('Sending with SendGrid to:', email);
-
-    const response = await sgMail.send({
-      to: email,
+    const info = await transporter.sendMail({
       from: process.env.EMAIL_FROM,
+      to: email,
       subject,
-      html
+      html,
     });
 
-    console.log('SUCCESS:', response);
+    console.log("EMAIL INFO:", info);
   } catch (error) {
-    console.log('SENDGRID ERROR:', error.response?.body || error);
+    console.log(error);
     throw error;
   }
 };
