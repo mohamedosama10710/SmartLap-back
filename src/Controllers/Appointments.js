@@ -53,7 +53,7 @@ export const createAppointment = async (req, res, next) => {
 };
 export const getLabDailyAppointments = async (req, res, next) => {
   try {
-    let { date } = req.query;
+    let { date } = req.body;
 
     const LabDailyAppointments = await Appointment.find({
       appointmentDate: date,
