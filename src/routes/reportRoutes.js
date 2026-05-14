@@ -19,7 +19,7 @@ router.post("/", auth, restrictTo("admin", "staff"), createReport);
 router.get("/", auth, restrictTo("admin", "staff"), getAllReports);
 
 // dangerous reports (admin)
-router.get("/dangerous", auth, restrictTo("admin"), getDangerousReports);
+router.get("/dangerous", getDangerousReports);
 
 // patient يشوف تقاريره
 router.get("/patient", auth, restrictTo("patient"), getPatientReport);
