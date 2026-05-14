@@ -143,25 +143,35 @@ export const getAllReports = async (req, res, next) => {
 
 let getDangerousReports = async (req, res, next) => {
   try {
-    let DangerousReports = await Report.find({ "tests.critical": true })
+    const dangerousReports = await Report.find({
+      tests: {
+        $elemMatch: { critical: true }
+      }
+    })
       .populate({
         path: "patient",
         select: "age gender weight height medications",
-        populate: { path: "accountId", select: "name phone" },
+        populate: {
+          path: "accountId",
+          select: "name phone",
+        },
       })
       .populate({
         path: "createdBy",
         select: "name role",
       });
+
     res.status(200).json({
       message: "success",
-      results: DangerousReports.length,
-      data: DangerousReports,
+      results: dangerousReports.length,
+      data: dangerousReports,
     });
   } catch (error) {
     next(error);
   }
 };
+
+
 let getPatientReport = async (req, res, next) => {
   try {
     const accountId = req.user._id;
