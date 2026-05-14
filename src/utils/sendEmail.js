@@ -45,12 +45,14 @@ dotenv.config();
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-export const sendEmail = async ({ email, subject, html }) => {
+export const sendEmail = async ({ email, subject, html,resetURL }) => {
   try {
     await sgMail.send({
       to: email,
       from: process.env.EMAIL_FROM,
+       name: "SmartLab",
       subject,
+       text: `Reset your password here: ${resetURL}`,
       html,
     });
 
