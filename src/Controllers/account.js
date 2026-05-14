@@ -308,6 +308,23 @@ const updatePassword = async (req, res) => {
   }
 };
 
+const adminProfile = async (req, res, next) => {
+  try {
+    let admin = await Account.findById(req.user._id)
+    if (!admin) {
+      return res.status(404).json({message:"not found"})
+    } else {
+      res.status(200).json({message:"success",data:admin})
+    }
+
+  } catch (err) {
+      res.status(400).json({
+      status: "fail",
+      message: err.message,
+    });
+  }
+}
+
 export {
   registerStaff,
   registerPatient,
@@ -318,4 +335,5 @@ export {
   resetPassword,
   deletedPatient,
   deleteStaff,
+  adminProfile
 };

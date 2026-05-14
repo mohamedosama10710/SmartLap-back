@@ -1,6 +1,6 @@
 import express from "express";
 import { auth, restrictTo } from "../middlewares/middleware.js";
-import { resetPassword, forgotPassword, deletedPatient } from "../Controllers/account.js";
+import { resetPassword, forgotPassword, deletedPatient, adminProfile } from "../Controllers/account.js";
 import {
   registerStaff,
   registerPatient,
@@ -16,6 +16,8 @@ router.post("/login", login);
 router.post("/registerStaff", auth, restrictTo("admin"), registerStaff);
 
 router.post("/registerPatient", registerPatient);
+
+router.get("/adminProfile",auth,restrictTo("admin"),adminProfile)
 
 //update (email,phone,number)
 router.patch("/updateProfile", auth, updateProfile);
