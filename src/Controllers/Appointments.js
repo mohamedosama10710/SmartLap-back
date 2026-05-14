@@ -53,10 +53,10 @@ export const createAppointment = async (req, res, next) => {
 };
 export const getLabDailyAppointments = async (req, res, next) => {
   try {
-    let { appointmentDate } = req.body;
+    let { date } = req.query;
 
     const LabDailyAppointments = await Appointment.find({
-      appointmentDate: appointmentDate,
+      appointmentDate: date,
       status: { $ne: "cancelled" },
     })
       .populate("patient", "name phone")
@@ -65,7 +65,7 @@ export const getLabDailyAppointments = async (req, res, next) => {
     res.status(200).json({
       status: "Success",
       results: LabDailyAppointments.length,
-      appointmentDate,
+      appointmentDate: date,
       data: LabDailyAppointments,
     });
   } catch (error) {
