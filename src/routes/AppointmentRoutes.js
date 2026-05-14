@@ -10,7 +10,7 @@ import {
 //createAppointment to patient
 router.post("/", auth, restrictTo("patient"), createAppointment);
 //get LabDailyAppointments for staff and admin
-router.get(
+router.post(
   "/dailySchedule",
   auth,
   restrictTo("staff", "admin"),
