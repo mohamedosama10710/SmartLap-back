@@ -68,6 +68,8 @@ let resetPassword = async (req, res, next) => {
     user.resetPasswordToken = undefined;
     user.resetPasswordExpires = undefined;
 
+    user.isFirstLogin=false
+
     await user.save();
     const loginToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRES_IN,
@@ -136,7 +138,7 @@ const deleteStaff = async (req, res) => {
 const registerPatient = async (req, res) => {
   // Logic to register a patient
   const { password } = req.body;
-      req.body.patientId = `PT-${Date.now().toString().slice(-6)}`;
+    req.body.patientId = `PT-${Date.now().toString().slice(-6)}`;
 
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
