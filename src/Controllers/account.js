@@ -30,8 +30,9 @@ let forgotPassword = async (req, res, next) => {
 
     await sendEmail({
       email: user.email,
-      subject: "change Password",
+      subject: "Reset your SmartLab password",
       html: htmlResetPassword(resetURL),
+      resetURL
     });
     console.log("AFTER SEND EMAIL");
     
