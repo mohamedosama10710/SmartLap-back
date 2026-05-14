@@ -57,7 +57,7 @@ export const getLabDailyAppointments = async (req, res, next) => {
 
     const LabDailyAppointments = await Appointment.find({
       appointmentDate: appointmentDate,
-      status: { $ne: "Cancelled" },
+      status: { $ne: "cancelled" },
     })
       .populate("patient", "name phone")
       .sort({ time: 1 });
