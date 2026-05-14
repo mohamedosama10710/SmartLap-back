@@ -135,7 +135,8 @@ const deleteStaff = async (req, res) => {
 const registerPatient = async (req, res) => {
   // Logic to register a patient
   const { password } = req.body;
-  req.body.patientId = `PT-${Date.now().toString().slice(-6)}`;
+      req.body.patientId = `PT-${Date.now().toString().slice(-6)}`;
+
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
   req.body.password = hashedPassword;
