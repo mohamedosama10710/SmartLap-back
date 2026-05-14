@@ -142,16 +142,17 @@ const tests = await TestReference.insertMany(data);
 const appointments = [];
 
 for (let i = 0; i < 20; i++) {
+  const day = String(10 + (i % 10)).padStart(2, '0');
+
   appointments.push({
     patient: accounts[i + 3]._id,
-    appointmentDate: new Date(`2026-05-${10 + (i % 10)}`),
+    appointmentDate: `2026-05-${day}`, // 👈 string format YYYY-MM-DD
     time: `${9 + (i % 6)}:00`,
     appointmentType: i % 4 === 0 ? "Home-Visit" : "Lab-Visit",
     address: i % 4 === 0 ? "Nasr City, Cairo" : undefined,
     status: ["cancelled", "completed"][i % 3],
   });
 }
-
 await Appointment.insertMany(appointments);
 
 //
